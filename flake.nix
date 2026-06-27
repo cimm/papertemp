@@ -1,5 +1,5 @@
 {
-  description = "PaperCal Development Environment";
+  description = "PaperTemp Development Environment";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";

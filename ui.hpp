@@ -4,6 +4,7 @@
 
 #include <Fonts/FreeSans12pt7b.h>
 #include <Fonts/FreeSansBold12pt7b.h>
+#include <Fonts/FreeSansBold24pt7b.h>
 #include <GxEPD2_BW.h>
 
 class UI {
@@ -35,20 +36,17 @@ public:
     _display->panel.setCursor(0, 3 * PADDING);
   }
 
-  void row(std::string left, std::string right, bool bold = false) {
-    if (bold) {
-      _display->panel.setFont(&FreeSansBold12pt7b);
-    } else {
-      _display->panel.setFont(&FreeSans12pt7b);
-    }
-    uint16_t y = _current_row * LINE_HEIGHT - (2 * PADDING);
-    _display->panel.setCursor(SIDEBAR_WIDTH - text_width(left) - 3 * PADDING, y);
-    _display->panel.setTextColor(GxEPD_WHITE);
-    _display->panel.print(left.c_str());
-    _display->panel.setCursor(SIDEBAR_WIDTH + PADDING, y);
+  void temperature(float temp) {
+    _display->panel.setFont(&FreeSansBold24pt7b);
+    _display->panel.setTextSize(3);
+    char buf[16];
+    sprintf(buf, "%.2g", temp);
+    uint16_t width = text_width(buf);
+    uint16_t x = SIDEBAR_WIDTH + ((_width - SIDEBAR_WIDTH) - width) / 2;
+    uint16_t y = LINE_HEIGHT * 3;
+    _display->panel.setCursor(x, y);
     _display->panel.setTextColor(GxEPD_BLACK);
-    _display->panel.print(right.c_str());
-    _current_row++;
+    _display->panel.print(buf);
   }
 
   void footer_left(std::string text) {

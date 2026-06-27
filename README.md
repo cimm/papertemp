@@ -1,24 +1,22 @@
-# PaperCal
+# PaperTemp
 
-PaperCal is a calendar application for [Paperd.Ink](https://paperd.ink/) Classic devices. This app connects to your existing [CalDAV](https://en.wikipedia.org/wiki/CalDAV) calendar and displays the upcoming events for a quick and convenient way to stay on top of your schedule.
+PaperTemp is a temperature application for [Paperd.Ink](https://paperd.ink/) Classic devices. It displays the temperature for a given [Netatmo](https://weathermap.netatmo.com/) weather station.
 
-PaperCal is under development, it works for me but is not production ready software.
+PaperTemp is under development, it works for me but is not production ready software.
 
-Currently, PaperCal only supports the Paperd.Ink Classic – the Merlot hasn’t been tested (I don’t own one). If you’d like to see support added for the Merlot, feel free to open a GitHub [issue](https://github.com/cimm/papercal/issues).
+Currently, PaperTemp only supports the Paperd.Ink Classic – the Merlot hasn’t been tested (I don’t own one). If you’d like to see support added for the Merlot, feel free to open a GitHub [issue](https://github.com/cimm/papertemp/issues).
 
-<p align="center">
-  <img src="screenshot.webp" alt="Paperd.Ink Classic running PaperCal"/>
-</p>
+PaperTemp is made to display the temperature from Netatmo devices, but it should be straightforward to swap the Netatmo class with any other temperature data source.
 
 ## Installation
 
 You can use the Arduino IDE to compile and upload the sketch, but I prefer the [arduino-cli](https://arduino.github.io/arduino-cli/0.29/). First clone this git repository:
 
 ```sh
-git clone https://github.com/cimm/papercal.git --depth 1
+git clone https://github.com/cimm/papertemp.git --depth 1
 ```
 
-Make sure to update your WiFi and CalDAV creates in the `papercal/config.hpp` file. This lets PaperCal connect to your calendar and network.
+Make sure to update your WiFi credentials and Netatmo settings in the `papertemp/config.hpp` file. This lets PaperTemp connect to your network and fetches the most recent temperature from a Netatmo weather station.
 
 We’ll use the arduino-cli tool to compile and upload the code. If you haven’t already, follow these steps to set up the ESP32 board and install the required libraries:
 
@@ -43,9 +41,9 @@ Or compile and upload in one go:
 arduino-cli compile --upload -p /dev/ttyUSB0 --fqbn esp32:esp32:esp32:PartitionScheme=no_ota
 ```
 
-The partition scheme wasn’t necessary before, but a year later, we ran out of space on the board. Switching to a different partition scheme freed up some room (see `arduino-cli board details --fqbn esp32:esp32:esp32` for details). I suspect one of the libraries might have been updated and now takes up more space now.
+The partition scheme may not be necessary, but it helps free space on the ESP32’s limited storage, and we don’t use OTA updates.
 
-After uploading, the board will restart. Wait a few seconds, and if everything went well, you should see your upcoming events. If you get an error like ‘Could not open /dev/ttyUSB0’, you might not have permission to access the USB port. Try changing the permissions and uploading again.
+After uploading, the board will restart. Wait a few seconds, and if everything went well, you should see the temperature. If you get an error like ‘Could not open /dev/ttyUSB0’, you might not have permission to access the USB port. Try changing the permissions and uploading again.
 
 ```sh
 sudo chmod a+rw /dev/ttyUSB0
@@ -58,11 +56,10 @@ Use the Arduino Serial Monitor extra debug info:
 arduino-cli monitor -p /dev/ttyUSB0
 ```
 
-## Known Issues
-
-- Only the Synology Calendar CalDAV implementation is tested. File a bug if your CalDAV server does not work.
-- Only ASCII is supported. This limits the display of some characters. Full UTF-8 support would take up too much of the program storage space.
-
 ## Acknowledgement
 
-A good chunk of the code is inspired on the official [Paperd.Ink Library for Arduino](https://github.com/paperdink/PaperdInk-Library). Besides the libraries above, it also includes a copy of the [TinyXML2](https://github.com/leethomason/tinyxml2) parser.
+A good chunk of the code is inspired on the official [Paperd.Ink Library for Arduino](https://github.com/paperdink/PaperdInk-Library).
+
+## See also
+
+I also wrote [PaperCal](https://suffix.be/blog/eink-calendar/), a similar Paperd.Ink application to display your upcoming calendar events.
