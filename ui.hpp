@@ -12,7 +12,6 @@ class UI {
   uint16_t _height;
   uint16_t _width;
   uint8_t _current_row = 1;
-  const uint8_t SIDEBAR_WIDTH = 90;
   const uint8_t PADDING = 5;
   const uint8_t LINE_HEIGHT = 40;
 
@@ -32,7 +31,7 @@ public:
 
   void reset() {
     _display->panel.fillScreen(GxEPD_WHITE);
-    _display->panel.fillRect(0, 0, SIDEBAR_WIDTH, _height, GxEPD_BLACK);  // left sidebar
+    _display->panel.fillRect(0, 0, 0, _height, GxEPD_BLACK);  // left sidebar
     _display->panel.setCursor(0, 3 * PADDING);
   }
 
@@ -42,7 +41,7 @@ public:
     char buf[16];
     sprintf(buf, "%.2g", temp);
     uint16_t width = text_width(buf);
-    uint16_t x = SIDEBAR_WIDTH + ((_width - SIDEBAR_WIDTH) - width) / 2;
+    uint16_t x = (_width - width) / 2;
     uint16_t y = LINE_HEIGHT * 3;
     _display->panel.setCursor(x, y);
     _display->panel.setTextColor(GxEPD_BLACK);
@@ -52,7 +51,7 @@ public:
   void footer_left(std::string text) {
     _display->panel.setFont();
     _display->panel.setTextSize(1);
-    _display->panel.setCursor(SIDEBAR_WIDTH + PADDING, _height - 2 * PADDING);
+    _display->panel.setCursor(PADDING, _height - 2 * PADDING);
     _display->panel.print(text.c_str());
   }
 
