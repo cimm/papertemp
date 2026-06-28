@@ -80,5 +80,5 @@ void refresh_datetime_to_display() {
 }
 
 void deep_sleep() {
-  device.sleep_timer_and_button_wakeup(60 * 15); // 15 min
+  device.sleep_timer_and_button_wakeup(REFRESH_RATE);
 }

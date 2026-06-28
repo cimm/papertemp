@@ -13,6 +13,8 @@
 #define TIME_ZONE "CET-1CEST,M3.5.0,M10.5.0/3"  // See https://github.com/nayarsystems/posix_tz_db/blob/master/zones.csv
 #define NTP_POOL "pool.ntp.org"
 
+#define REFRESH_RATE 900  // in seconds
+
 constexpr bool _strings_equal(const char* a, const char* b) {
   return *a == *b && (*a == '\0' || _strings_equal(a + 1, b + 1));
 }
