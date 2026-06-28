@@ -13,7 +13,6 @@ class UI {
   uint16_t _width;
   uint8_t _current_row = 1;
   const uint8_t PADDING = 5;
-  const uint8_t LINE_HEIGHT = 40;
 
   uint16_t text_width(std::string text) {
     int16_t x, y;
@@ -31,24 +30,35 @@ public:
 
   void reset() {
     _display->panel.fillScreen(GxEPD_WHITE);
-    _display->panel.fillRect(0, 0, 0, _height, GxEPD_BLACK);  // left sidebar
+    _display->panel.fillTriangle(0, 0, 0, _height, _width, 0, GxEPD_BLACK);
     _display->panel.setCursor(0, 3 * PADDING);
   }
 
-  void temperature(float temp) {
+  void left_panel_value(float value) {
+    _display->panel.setTextColor(GxEPD_WHITE);
     _display->panel.setFont(&FreeSansBold24pt7b);
-    _display->panel.setTextSize(3);
     char buf[16];
-    sprintf(buf, "%.2g", temp);
-    uint16_t width = text_width(buf);
-    uint16_t x = (_width - width) / 2;
-    uint16_t y = LINE_HEIGHT * 3;
+    sprintf(buf, "%.1f", value);
+    uint16_t x = 35;
+    uint16_t y = 120;
+    // split decimal value
+    int integer_part = (int)value;
+    float fractional_part = fabs(value - integer_part);
+    char fractional_buf[4];
+    sprintf(fractional_buf, ".%01d", (int)(fractional_part * 10));
+    // integer part
     _display->panel.setCursor(x, y);
-    _display->panel.setTextColor(GxEPD_BLACK);
-    _display->panel.print(buf);
+    _display->panel.setTextSize(2);
+    _display->panel.print(integer_part);
+    // fractional part
+    uint16_t integer_width = text_width(std::to_string(integer_part));
+    _display->panel.setCursor(x + integer_width + 9, y + 1);  // 9 & 1 are padding
+    _display->panel.setTextSize(1);
+    _display->panel.print(fractional_buf);
   }
 
   void footer_left(std::string text) {
+    _display->panel.setTextColor(GxEPD_BLACK);
     _display->panel.setFont();
     _display->panel.setTextSize(1);
     _display->panel.setCursor(PADDING, _height - 2 * PADDING);
@@ -56,6 +66,7 @@ public:
   }
 
   void footer_right(std::string text) {
+    _display->panel.setTextColor(GxEPD_BLACK);
     _display->panel.setFont();
     _display->panel.setTextSize(1);
     _display->panel.setCursor(_width - text_width(text) - PADDING, _height - 2 * PADDING);

@@ -45,7 +45,7 @@ void temperature_to_display() {
     return;
   }
   Serial.printf("Netatmo reported %.2f degrees\n", temp);
-  ui.temperature(temp);
+  ui.left_panel_value(temp);
 }
 
 void disconnect_wifi() {
