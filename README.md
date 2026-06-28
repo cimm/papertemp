@@ -1,12 +1,12 @@
 # PaperTemp
 
-PaperTemp is a temperature application for [Paperd.Ink](https://paperd.ink/) Classic devices. It displays the temperature for a given [Netatmo](https://weathermap.netatmo.com/) weather station.
+PaperTemp is a temperature application for [Paperd.Ink](https://paperd.ink/) Classic devices. It displays the forecasted temperature for a location from OpenMeteo and the current temperature for a given [Netatmo](https://weathermap.netatmo.com/) weather station side by side.
 
 PaperTemp is under development, it works for me but is not production ready software.
 
 Currently, PaperTemp only supports the Paperd.Ink Classic – the Merlot hasn’t been tested (I don’t own one). If you’d like to see support added for the Merlot, feel free to open a GitHub [issue](https://github.com/cimm/papertemp/issues).
 
-PaperTemp is made to display the temperature from Netatmo devices, but it should be straightforward to swap the Netatmo class with any other temperature data source.
+PaperTemp is made to display the temperature from Netatmo devices and OpenMeteo, but it should be straightforward to swap these with another temperature data source.
 
 ## Installation
 
@@ -16,7 +16,7 @@ You can use the Arduino IDE to compile and upload the sketch, but I prefer the [
 git clone https://github.com/cimm/papertemp.git --depth 1
 ```
 
-Make sure to update your WiFi credentials and Netatmo settings in the `papertemp/config.hpp` file. This lets PaperTemp connect to your network and fetches the most recent temperature from a Netatmo weather station.
+Make sure to update your WiFi credentials, OpenMeteo location, and Netatmo settings in the `papertemp/config.hpp` file.
 
 We’ll use the arduino-cli tool to compile and upload the code. If you haven’t already, follow these steps to set up the ESP32 board and install the required libraries:
 
@@ -26,6 +26,7 @@ arduino-cli config set board_manager.additional_urls https://dl.espressif.com/dl
 arduino-cli core update-index
 arduino-cli core install esp32:esp32
 arduino-cli lib install GxEPD2@1.6.9
+arduino-cli lib install ArduinoJson@7.4.3
 ```
 
 Finally, compile and upload the sketch:

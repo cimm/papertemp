@@ -4,7 +4,11 @@
 #define WIFI_SSID "ssid"
 #define WIFI_PASSWORD "password"
 
-// Netatmo API configuration
+// OpenMeteo API
+#define OPEN_METEO_LATITUDE "50.0000"
+#define OPEN_METEO_LONGITUDE "4.0000"
+
+// Netatmo API
 #define NETATMO_TOKEN "token"
 #define NETATMO_DEVICE_ID "device id"
 #define NETATMO_MODULE_ID "module id"

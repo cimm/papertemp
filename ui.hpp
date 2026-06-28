@@ -40,7 +40,30 @@ public:
     char buf[16];
     sprintf(buf, "%.1f", value);
     uint16_t x = 35;
-    uint16_t y = 120;
+    uint16_t y = 125;
+    // split decimal value
+    int integer_part = (int)value;
+    float fractional_part = fabs(value - integer_part);
+    char fractional_buf[4];
+    sprintf(fractional_buf, ".%01d", (int)(fractional_part * 10));
+    // integer part
+    _display->panel.setCursor(x, y);
+    _display->panel.setTextSize(2);
+    _display->panel.print(integer_part);
+    // fractional part
+    uint16_t integer_width = text_width(std::to_string(integer_part));
+    _display->panel.setCursor(x + integer_width + 9, y + 1);  // 9 & 1 are padding
+    _display->panel.setTextSize(1);
+    _display->panel.print(fractional_buf);
+  }
+
+  void right_panel_value(float value) {
+    _display->panel.setTextColor(GxEPD_BLACK);
+    _display->panel.setFont(&FreeSansBold24pt7b);
+    char buf[16];
+    sprintf(buf, "%.1f", value);
+    uint16_t x = 215;
+    uint16_t y = 250;
     // split decimal value
     int integer_part = (int)value;
     float fractional_part = fabs(value - integer_part);

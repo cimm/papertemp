@@ -4,6 +4,7 @@
 #include "paper/paper_display.hpp"
 #include "paper/paper_sound.hpp"
 #include "paper/paper_wifi.hpp"
+#include "open_meteo.hpp"
 #include "netatmo.hpp"
 #include "ui.hpp"
 
@@ -24,7 +25,8 @@ void setup() {
   connect_wifi();
   get_datetimes();
   reset_ui();
-  temperature_to_display();
+  open_meteo_to_display();
+  netatmo_to_display();
   refresh_datetime_to_display();
   disconnect_wifi();
   refresh_display();
@@ -37,7 +39,18 @@ void connect_wifi() {
   device_wifi.connect(WIFI_SSID, WIFI_PASSWORD);
 }
 
-void temperature_to_display() {
+void open_meteo_to_display() {
+  OpenMeteo open_meteo(OPEN_METEO_LATITUDE, OPEN_METEO_LONGITUDE);
+  float temp = open_meteo.temperature();
+  if (open_meteo.error()) {
+    set_error(open_meteo.last_error_message.c_str());
+    return;
+  }
+  Serial.printf("OpenMeteo reported %.2f degrees\n", temp);
+  ui.left_panel_value(temp);
+}
+
+void netatmo_to_display() {
   Netatmo netatmo(NETATMO_TOKEN, NETATMO_DEVICE_ID, NETATMO_MODULE_ID);
   float temp = netatmo.temperature();
   if (netatmo.error()) {
@@ -45,7 +58,7 @@ void temperature_to_display() {
     return;
   }
   Serial.printf("Netatmo reported %.2f degrees\n", temp);
-  ui.left_panel_value(temp);
+  ui.right_panel_value(temp);
 }
 
 void disconnect_wifi() {
